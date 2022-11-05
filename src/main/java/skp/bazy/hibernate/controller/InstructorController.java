@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import skp.bazy.hibernate.exception.ResourceNotFoundException;
 import skp.bazy.hibernate.model.Course;
 import skp.bazy.hibernate.model.Instructor;
+import skp.bazy.hibernate.model.InstructorDetail;
 import skp.bazy.hibernate.repository.InstructorRepository;
 
 import java.util.HashMap;
@@ -55,6 +56,19 @@ public class InstructorController {
                 .orElseThrow(()-> new ResourceNotFoundException("Instructor not found :: "+ instructorId));
 
         instructor.setEmail(instructorDetails.getEmail());
+
+        Instructor updated = instructorRepository.save(instructor);
+        return ResponseEntity.ok(updated);
+    }
+
+    @PutMapping("/{id}/editDetails")
+    public ResponseEntity<Instructor> updateInstructorDetail(@PathVariable(value = "id") Long instructorId,
+                                                       @Valid @RequestBody InstructorDetail
+                                                               instructorDetails) throws ResourceNotFoundException {
+        Instructor instructor = instructorRepository.findById(instructorId)
+                .orElseThrow(()-> new ResourceNotFoundException("Instructor not found :: "+ instructorId));
+
+       instructor.setInstructorDetail(instructorDetails);
 
         Instructor updated = instructorRepository.save(instructor);
         return ResponseEntity.ok(updated);
