@@ -7,12 +7,14 @@ import org.springframework.web.bind.annotation.*;
 import skp.bazy.hibernate.exception.ResourceNotFoundException;
 import skp.bazy.hibernate.model.Course;
 import skp.bazy.hibernate.model.Instructor;
+import skp.bazy.hibernate.model.User;
 import skp.bazy.hibernate.repository.CourseRepository;
 import skp.bazy.hibernate.repository.InstructorRepository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/course")
@@ -86,5 +88,13 @@ public class CourseController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+
+    @GetMapping("/getUsers/{id}")
+    public Set<User> getUsers(@PathVariable(value = "id") Long id) throws ResourceNotFoundException {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+
+        return course.getUsers();
     }
 }

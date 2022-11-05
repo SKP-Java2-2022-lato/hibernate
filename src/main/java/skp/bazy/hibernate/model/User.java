@@ -2,8 +2,11 @@ package skp.bazy.hibernate.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -18,6 +21,9 @@ public class User {
 
     @Column(name = "email", nullable = false)
     private String email;
+
+    @ManyToMany(mappedBy = "users", cascade = CascadeType.ALL)
+    private Set<Course> courses = new HashSet<>();
 
     public User(String firstName, String lastName, String email) {
         this.firstName = firstName;
@@ -59,5 +65,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.boot.context.config.ConfigDataResourceNotFoundExcepti
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import skp.bazy.hibernate.exception.ResourceNotFoundException;
+import skp.bazy.hibernate.model.Course;
 import skp.bazy.hibernate.model.User;
+import skp.bazy.hibernate.repository.CourseRepository;
 import skp.bazy.hibernate.repository.UserRepository;
 
 import java.util.HashMap;
@@ -18,6 +20,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private CourseRepository courseRepository;
 
     @GetMapping("/users")
     public List<User> getAllUsers(){
@@ -59,5 +63,21 @@ public class UserController {
         User updatedUser = userRepository.save(user);
 
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping("users/{id}/course/{course_id}")
+    public ResponseEntity<User> saveToCourse(@PathVariable(value = "id") Long userId,
+                                             @PathVariable(value = "course_id") Long courseId) throws ResourceNotFoundException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found on ::"+userId));
+
+        Course course = courseRepository.findById(courseId).
+                orElseThrow(() -> new ResourceNotFoundException("Course not found on::"+courseId));
+
+        user.getCourses().add(course);
+        course.getUsers().add(user);
+        userRepository.save(user);
+        courseRepository.save(course);
+        return ResponseEntity.ok(user);
     }
 }
