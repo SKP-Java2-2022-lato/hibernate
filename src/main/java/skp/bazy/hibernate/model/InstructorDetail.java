@@ -14,7 +14,7 @@ import java.net.URI;
 @AllArgsConstructor
 @Entity
 @Table(name = "instructor_detail")
-public class InstructorDetail {
+public class InstructorDetail extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

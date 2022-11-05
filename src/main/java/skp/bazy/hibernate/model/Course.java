@@ -16,7 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "course")
-public class Course {
+public class Course extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

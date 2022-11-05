@@ -7,7 +7,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "user")
-public class User {
+public class User extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

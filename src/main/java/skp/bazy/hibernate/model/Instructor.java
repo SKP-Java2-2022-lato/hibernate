@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "instructor")
-public class Instructor {
+public class Instructor extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
